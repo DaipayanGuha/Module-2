@@ -1,0 +1,121 @@
+create table customer(
+  customerId number(5),
+  cust_name varchar2(20),
+  address1 varchar2(30),
+  address2 varchar2(30)
+);
+
+alter table customer
+  rename column cust_name to customerName;
+  
+alter table customer modify customername  varchar2(30) not null;
+
+alter table customer add gender varchar2(1);
+
+alter table customer add age number(3);
+
+alter table customer add phoneNo number(10);
+
+
+
+alter table customer rename to cust_table;
+
+desc cust_table;
+
+
+
+alter table cust_table add constraints Custid_prim PRIMARY KEY (customerid);
+
+alter table cust_table drop PRIMARY KEY;
+
+alter table cust_table
+  add constraint PK_Cust_Table PRIMARY KEY(CUSTOMERID);
+  
+TRUNCATE table cust_table;
+
+alter table cust_table add  email varchar2(20);
+
+alter table cust_table drop column email;
+
+create table Suppliers 
+  as select customerid as suppid,customername as sname,
+    address1 as addr1,address2 as addr2,phoneno as contactno 
+    from cust_table;
+    
+Drop table Suppliers;
+create table customermaster(
+  customerid number(10),
+  customername varchar2(30) not null,Address1 varchar2(30) not null,
+  Address2 varchar2(30),Gender varchar2(1),
+  Age number(3),phoneno number(10)
+  );
+  
+alter table customermaster
+  add constraint CustId_PK PRIMARY KEY(CUSTOMERID);
+  
+create table accountsmaster (customerid number(5),
+  Accountnumber number(10, 2),
+  accounttype char(3),
+  ledgerbalance number(10, 2) Not Null);
+  
+alter table accountsmaster
+  add constraint Acc_PK PRIMARY KEY(AccountNumber);
+  
+Create sequence seq_ano
+		MINVALUE 101
+		MAXVALUE 10000
+		START WITH 101
+		INCREMENT BY 1
+		CACHE 101;
+
+alter table Accountsmaster
+  add constraint ck_ac check(accounttype='NRI' or accounttype='IND');
+  
+alter table Accountsmaster 
+  add constraint Balance_check 
+  check(ledgerbalance > 5000);
+  
+delete from Accountsmaster,customermaster where customerid = 1001
+
+create table accountdetails as select * from Accountsmaster;
+  
+  
+CREATE VIEW Acc_view AS 
+  SELECT Customerid as customerCode ,Customername as AccountHolderName,
+    Accountnumber,AccountType as Type,ledgerBalance as Balance
+	from AccountsMaster natural join customermaster;
+        
+select * from acc_view
+
+CREATE VIEW vAccs_Dtls 
+  AS SELECT 	AccountType,ledgerbalance 
+  from Accountsmaster where accounttype = 'IND' and ledgerbalance < 10000;
+  
+CREATE sequence SEQ_DEPT 
+        minvalue 40 start with 40
+	increment by 10 
+        MAXVALUE 200 
+        cache 40;
+
+create table department2master(deptno number,Dname varchar2(25),location varchar2(25));
+
+insert into department2master  values(seq_dept.NEXTVAL,'MARKETING','NEW DELHI');
+
+insert into department2master  values(seq_dept.NEXTVAL,'SALES','chennai');
+insert into department2master  values(seq_dept.NEXTVAL,'RESEARCH','BOSTON');
+
+DROP sequence seq_dept;
+
+CREATE INDEX no_name on emp(empno);
+
+select * from emp;
+
+create SYNONYM synemp for emp;
+
+select * from synemp;
+
+CREATE INDEX IDX_EMP_HIREDATE on emp(HIREDATE);
+
+CREATE sequence SEQ_EMP minvalue 1001 start with 1001
+	increment by 1 cache 1001; 
+ 

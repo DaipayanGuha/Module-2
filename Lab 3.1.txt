@@ -1,0 +1,60 @@
+
+select s.staff_name, s.dept_code, 
+  d.dept_name, s.staff_sal
+  from Staff_master s, department_master d
+  where s.dept_code = d.dept_code;
+  
+select s.staff_code as "Staff#", s.staff_name as "Staff",
+      d.dept_name as "Department Name", s.mgr_code as "Mgr#"
+       from Staff_master s, department_master d
+  where s.dept_code = d.dept_code;
+  
+select staff_code, staff_name, staff_sal from STAFF_MASTER
+  where staff_sal < (select avg(staff_sal) from STAFF_MASTER);
+  
+ select s.student_code,s.student_name,b.book_code,m.book_name from student_master s,book_transactions b,book_master m
+         where s.student_code=b.student_code and
+         b.book_code=m.book_code and 
+         book_expected_return_date = to_date('09-02-2011', 'dd-mm-yyyy');
+  
+select book_name from book_master
+  where book_pub_author in
+  (select book_pub_author from BOOK_MASTER
+  group by book_pub_author
+  having count(book_pub_author) > 1);
+
+select staff_name,staff_sal,department_master.dept_code,department_master.dept_name
+          from staff_master,department_master where staff_sal>20000;
+
+  
+select staff_code, staff_name, dept_name from staff_master  natural join
+  department_master  natural join (
+   select  staff_code from Staff_master  natural join
+  book_transactions 
+  group by staff_code
+  having count(book_code) > 1)
+  
+  
+
+
+select  count(student_code) as "Stud_count"  from student_master 
+  natural join department_master
+  group by dept_code
+  
+
+select staff_code, staff_name, dept_name, 
+  design_name from staff_master natural join
+    DEPARTMENT_MASTER natural join DESIGNATION_MASTER
+    where months_between(sysdate, hiredate) > 3;
+    
+select dept_code, dept_name, count(staff_code) as "Number of people"
+from STAFF_MASTER natural join DEPARTMENT_MASTER
+group by dept_code, dept_name;
+    
+    
+
+    
+
+
+
+ 

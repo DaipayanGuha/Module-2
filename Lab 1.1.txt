@@ -1,0 +1,20 @@
+select staff_name as "Staff Name", design_code as "Designation Code"
+  from STAFF_MASTER
+  where staff_sal between 12000 and 25000
+  and
+  hiredate < to_date('01-03', 'MM-YY');
+  
+select staff_code as "Staff Code", staff_name as "Name",
+  dept_code as "Department number" from STAFF_MASTER
+  where months_between(sysdate, hiredate)/12 >= 18
+  order by months_between(sysdate, hiredate)/12 desc;
+  
+select * from STAFF_MASTER where mgr_code is null;
+
+select * from BOOK_MASTER 
+  where book_pub_year between 2001 and 2004
+  and book_name like '%&%';
+  
+select staff_name as "Names of staff"
+  from STAFF_MASTER
+  where staff_name like '%\_%' escape '\';
